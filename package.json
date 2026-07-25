@@ -14,12 +14,12 @@
       "require": "./dist/index.cjs"
     },
     "./v2": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/v2.js",
+      "require": "./dist/v2.cjs"
     },
     "./native": {
-      "types": "./src/native/index.ts",
-      "default": "./src/native/index.ts"
+      "types": "./native.d.ts",
+      "default": "./native.js"
     },
     "./style.css": "./dist/style.css",
     "./dist/style.css": "./dist/style.css"
