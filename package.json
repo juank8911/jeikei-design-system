@@ -25,7 +25,10 @@
     "./dist/style.css": "./dist/style.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "native.js",
+    "native.d.ts",
+    "src"
   ],
   "scripts": {
     "dev": "vite",
