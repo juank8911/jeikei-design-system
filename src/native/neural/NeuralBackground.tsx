@@ -23,14 +23,34 @@ export const NeuralBackground: React.FC<NeuralBackgroundProps> = () => {
   const nodeColor = 'rgba(255, 255, 255, 0.2)';
   const activeNodeColor = colors[theme].accent;
 
+  const baseSkPath = useMemo(() => Skia.Path.Make(), []);
+  const activeSkPath = useMemo(() => Skia.Path.Make(), []);
+  const [forceRender, setForceRender] = useState(0);
+
   useEffect(() => {
     if (!engine) return;
 
     let frameCount = 0;
     let lastFpsUpdate = Date.now();
+    let lastRenderUpdate = Date.now();
 
     const unsubscribe = engine.subscribe((state) => {
       const { nodes, edges, activeEdges } = state;
+
+      // FPS tracking
+      frameCount++;
+      const now = Date.now();
+      if (now - lastFpsUpdate > 1000) {
+        setFps(frameCount);
+        frameCount = 0;
+        lastFpsUpdate = now;
+      }
+
+      // Throttle rendering to ~30fps to prevent Hermes/JSI crash
+      if (now - lastRenderUpdate < 33) {
+        return;
+      }
+      lastRenderUpdate = now;
 
       // 1. Prepare Node Points
       const standardPoints: any[] = [];
@@ -45,9 +65,9 @@ export const NeuralBackground: React.FC<NeuralBackgroundProps> = () => {
         }
       });
 
-      // 2. Prepare Edges Paths
-      const baseSkPath = Skia.Path.Make();
-      const activeSkPath = Skia.Path.Make();
+      // 2. Prepare Edges Paths (Reuse paths)
+      baseSkPath.reset();
+      activeSkPath.reset();
 
       edges.forEach((edge) => {
         const nodeA = nodes[edge.from];
@@ -69,21 +89,13 @@ export const NeuralBackground: React.FC<NeuralBackgroundProps> = () => {
       setActiveNodePoints(energizedPoints);
       setEdgesPath(baseSkPath);
       setActiveEdgesPath(activeSkPath);
-
-      // FPS tracking
-      frameCount++;
-      const now = Date.now();
-      if (now - lastFpsUpdate > 1000) {
-        setFps(frameCount);
-        frameCount = 0;
-        lastFpsUpdate = now;
-      }
+      setForceRender(prev => prev + 1);
     });
 
     return () => {
       unsubscribe();
     };
-  }, [engine]);
+  }, [engine, baseSkPath, activeSkPath]);
 
   const bgStyle = useMemo(() => {
     return {
