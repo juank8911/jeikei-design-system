@@ -17,6 +17,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./native": {
+      "types": "./src/native/index.ts",
+      "default": "./src/native/index.ts"
+    },
     "./style.css": "./dist/style.css",
     "./dist/style.css": "./dist/style.css"
   },

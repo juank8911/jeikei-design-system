@@ -58,6 +58,88 @@ export default function App() {
 
 ---
 
+## 📱 Mobile Support (React Native & Expo)
+
+¡JeiKei ahora incluye soporte móvil completo de alto rendimiento nativo! La versión móvil está optimizada para **Expo** y **React Native**, utilizando **Canvas acelerado por GPU** con `@shopify/react-native-skia` y desenfoque de vidrio con `expo-blur`.
+
+### 📦 Instalación Móvil
+
+Para utilizar este diseño en tus aplicaciones móviles, instala el sistema de diseño de JeiKei junto con sus dependencias nativas en tu proyecto Expo:
+
+```bash
+# 1. Instalar el sistema de diseño JeiKei
+npm install "git+https://github.com/jikey8911/jeikei-design-system.git"
+
+# 2. Instalar dependencias nativas de Expo requeridas
+npx expo install @shopify/react-native-skia expo-blur
+```
+
+### 🚀 Uso en Móvil (Quick Start)
+
+Importa los componentes nativos desde el submódulo `jeikei-design-system/native`:
+
+```tsx
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { NeoLayout, NeoCard, NeoButton, NeoInput, NeoBadge } from 'jeikei-design-system/native';
+
+export default function App() {
+  const [query, setQuery] = useState('');
+
+  return (
+    <NeoLayout>
+      <View style={styles.container}>
+        {/* Badge de estatus de neón */}
+        <NeoBadge label="System Active" variant="success" />
+
+        {/* Tarjeta de vidrio con efecto de desenfoque HUD */}
+        <NeoCard
+          title="Neural Dashboard"
+          value="98.4%"
+          trend={{ value: 'OPTIMAL', direction: 'up' }}
+        >
+          <Text style={styles.text}>
+            La malla neuronal Skia está renderizando de forma fluida a 60 FPS acelerada por GPU.
+          </Text>
+        </NeoCard>
+
+        {/* Input HUD neón */}
+        <NeoInput
+          label="Enviar Comando"
+          placeholder="INGRESA PARÁMETROS..."
+          value={query}
+          onChangeText={setQuery}
+        />
+
+        {/* Botón neón interactivo con impulsos en el canvas */}
+        <NeoButton variant="primary" size="md">
+          Emitir Señal
+        </NeoButton>
+      </View>
+    </NeoLayout>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 24,
+    justifyContent: 'center',
+    flex: 1,
+  },
+  text: {
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: 12,
+  }
+});
+```
+
+### 🧠 ¿Cómo funciona en móviles?
+- **@shopify/react-native-skia:** Dibuja la malla neuronal, las conexiones de red y los destellos directamente en un lienzo nativo de C++ acelerado por GPU para una animación fluida sin consumir batería.
+- **Impulsos táctiles:** Al presionar botones o interactuar con tarjetas, se obtienen las coordenadas del gesto táctil (`pageX`, `pageY`) y se inyecta energía directamente en el nodo más cercano del lienzo de Skia en tiempo real.
+- **Glassmorphism óptimo:** Utiliza `expo-blur` en iOS para un desenfoque desenfadado de alto nivel y un fallback oscuro translúcido estilizado en Android para el mejor rendimiento.
+
+---
+
 ## 🧩 Components
 
 | Component | Description |
