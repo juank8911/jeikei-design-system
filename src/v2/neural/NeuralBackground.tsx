@@ -22,7 +22,7 @@ export const NeuralBackground: React.FC<NeuralBackgroundProps> = ({
 }) => {
   const { engine, theme } = useSystem();
   const containerRef = useRef<HTMLDivElement>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer>();
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const [fps, setFps] = useState(0);
 
   useEffect(() => {

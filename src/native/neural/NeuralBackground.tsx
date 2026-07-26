@@ -104,8 +104,8 @@ export const NeuralBackground: React.FC<NeuralBackgroundProps> = () => {
   }, [theme]);
 
   return (
-    <View style={[StyleSheet.absoluteFillObject, bgStyle]}>
-      <Canvas style={StyleSheet.absoluteFillObject}>
+    <View style={[StyleSheet.absoluteFill, bgStyle]}>
+      <Canvas style={StyleSheet.absoluteFill}>
         {/* Passive Edges */}
         {edgesPath && (
           <Path

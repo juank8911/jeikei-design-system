@@ -112,7 +112,7 @@ export const NeoCard: React.FC<NeoCardProps> = ({
             ]
         }
       >
-        <BlurView intensity={25} tint="dark" style={StyleSheet.absoluteFillObject} />
+        <BlurView intensity={25} tint="dark" style={StyleSheet.absoluteFill} />
         {renderContent()}
       </CardWrapper>
     );
