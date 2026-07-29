@@ -140,7 +140,7 @@ export class NeuralEngine implements NeuralEngineAPI {
   }
 
   private updatePositions(delta: number) {
-    const speed = 0.4;
+    const speed = 0.8;
     this.nodes.forEach(node => {
       node.position[0] += node.velocity[0] * delta * speed;
       node.position[1] += node.velocity[1] * delta * speed;

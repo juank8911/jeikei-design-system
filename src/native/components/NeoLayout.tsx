@@ -1,15 +1,30 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { View, StyleSheet, SafeAreaView, StatusBar, Platform, GestureResponderEvent } from 'react-native';
 import { SystemProvider } from '../system/SystemProvider';
 import { NeuralBackground } from '../neural/NeuralBackground';
+import { useSystem } from '../system/SystemContext';
 
 export interface NeoLayoutProps {
   children: React.ReactNode;
 }
 
 const NeoLayoutInner: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { engine } = useSystem();
+
+  const handleTouch = (e: GestureResponderEvent) => {
+    if (engine) {
+      const { pageX, pageY } = e.nativeEvent;
+      if (pageX !== undefined && pageY !== undefined) {
+        engine.emitPulse(pageX, pageY, 1.0);
+      }
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      onTouchStart={handleTouch}
+    >
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
       {/* The animated Neural mesh background */}

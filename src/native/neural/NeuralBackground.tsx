@@ -106,23 +106,13 @@ export const NeuralBackground: React.FC<NeuralBackgroundProps> = () => {
   return (
     <View style={[StyleSheet.absoluteFill, bgStyle]}>
       <Canvas style={StyleSheet.absoluteFill}>
-        {/* Passive Edges */}
-        {edgesPath && (
-          <Path
-            path={edgesPath}
-            color={inactiveColor}
-            style="stroke"
-            strokeWidth={1}
-          />
-        )}
-
-        {/* Active Energized Edges (Glow effect) */}
+        {/* Active Energized Edges (Glow effect) - We don't render passive edges anymore to keep the UI clean */}
         {activeEdgesPath && (
           <Path
             path={activeEdgesPath}
             color={activeColor}
             style="stroke"
-            strokeWidth={2}
+            strokeWidth={1.5}
           />
         )}
 

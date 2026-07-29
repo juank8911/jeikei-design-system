@@ -81,7 +81,12 @@ export const NeoButton: React.FC<NeoButtonProps> = ({
         styles.button,
         size === 'sm' ? styles.btnSm : size === 'lg' ? styles.btnLg : styles.btnMd,
         ...getButtonStyles(),
-        pressed && styles.pressed,
+        pressed && [
+          styles.pressed,
+          variant === 'primary'
+            ? { backgroundColor: '#ffffff', opacity: 0.9, borderColor: '#ffffff', shadowOpacity: 0.8, shadowRadius: 15 }
+            : { backgroundColor: 'rgba(255, 255, 255, 0.15)', borderColor: accentColor, shadowColor: accentColor, shadowOpacity: 0.8, shadowRadius: 12, shadowOffset: { width: 0, height: 0 } }
+        ],
         disabled && styles.disabled,
       ]}
     >
@@ -125,7 +130,6 @@ const styles = StyleSheet.create({
   },
   pressed: {
     transform: [{ scale: 0.96 }],
-    opacity: 0.85,
   },
   disabled: {
     opacity: 0.4,

@@ -90,11 +90,17 @@ export const NeoCard: React.FC<NeoCardProps> = ({
 
   const containerStyles = [
     styles.card,
-    { borderColor: 'rgba(255, 255, 255, 0.08)' },
     cardShadow,
   ];
 
   const CardWrapper = onPress ? Pressable : View;
+
+  const renderSpecularHighlight = () => (
+    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+      <View style={styles.specularTop} />
+      <View style={styles.specularLeft} />
+    </View>
+  );
 
   if (BlurView && Platform.OS === 'ios') {
     return (
@@ -104,15 +110,16 @@ export const NeoCard: React.FC<NeoCardProps> = ({
           ? (({ pressed }: any) => [
               ...containerStyles,
               pressed && styles.pressed,
-              { overflow: 'hidden', backgroundColor: 'rgba(11, 15, 20, 0.35)' }
+              { overflow: 'hidden', backgroundColor: pressed ? 'rgba(255,255,255,0.05)' : 'transparent' }
             ])
           : [
               ...containerStyles,
-              { overflow: 'hidden', backgroundColor: 'rgba(11, 15, 20, 0.35)' }
+              { overflow: 'hidden', backgroundColor: 'transparent' }
             ]
         }
       >
-        <BlurView intensity={25} tint="dark" style={StyleSheet.absoluteFill} />
+        <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+        {renderSpecularHighlight()}
         {renderContent()}
       </CardWrapper>
     );
@@ -126,14 +133,15 @@ export const NeoCard: React.FC<NeoCardProps> = ({
         ? (({ pressed }: any) => [
             ...containerStyles,
             pressed && styles.pressed,
-            { backgroundColor: 'rgba(11, 15, 21, 0.75)' }
+            { backgroundColor: pressed ? 'rgba(11, 15, 21, 0.65)' : 'rgba(11, 15, 21, 0.5)' }
           ])
         : [
             ...containerStyles,
-            { backgroundColor: 'rgba(11, 15, 21, 0.75)' }
+            { backgroundColor: 'rgba(11, 15, 21, 0.5)' }
           ]
       }
     >
+      {renderSpecularHighlight()}
       {renderContent()}
     </CardWrapper>
   );
@@ -142,10 +150,27 @@ export const NeoCard: React.FC<NeoCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 16,
     padding: 24,
     marginVertical: 10,
     position: 'relative',
+  },
+  specularTop: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  specularLeft: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    width: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
   },
   contentContainer: {
     zIndex: 10,
