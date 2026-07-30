@@ -68,7 +68,7 @@ Para utilizar este diseño en tus aplicaciones móviles, instala el sistema de d
 
 ```bash
 # 1. Instalar el sistema de diseño JeiKei
-npm install "git+https://github.com/jikey8911/jeikei-design-system.git"
+npm install "git+https://github.com/juank8911/jeikei-design-system.git"
 
 # 2. Instalar dependencias nativas de Expo requeridas
 npx expo install @shopify/react-native-skia expo-blur
