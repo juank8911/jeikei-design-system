@@ -42,8 +42,8 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, [width, height, engine]);
 
   return (
-    <SystemContext.Provider value={{ engine, theme, setTheme }}>
+    <SystemContext value={{ engine, theme, setTheme }}>
       {children}
-    </SystemContext.Provider>
+    </SystemContext>
   );
 };

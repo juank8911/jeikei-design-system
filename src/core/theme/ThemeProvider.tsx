@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, use, useState } from 'react';
 
 export type Theme = 'neural' | 'glass' | 'cyber';
 
@@ -13,16 +13,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [theme, setTheme] = useState<Theme>('neural');
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext value={{ theme, setTheme }}>
       <div className={`theme-${theme} min-h-screen bg-[#05070a] text-white`}>
         {children}
       </div>
-    </ThemeContext.Provider>
+    </ThemeContext>
   );
 };
 
 export const useTheme = () => {
-  const context = useContext(ThemeContext);
+  const context = use(ThemeContext);
   if (!context) throw new Error('useTheme must be used within a ThemeProvider');
   return context;
 };

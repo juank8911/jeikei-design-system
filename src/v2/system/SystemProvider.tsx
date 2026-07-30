@@ -49,10 +49,10 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const styleVars = useMemo(() => getColorVars(theme), [theme]);
 
   return (
-    <SystemContext.Provider value={{ engine, theme, setTheme }}>
+    <SystemContext value={{ engine, theme, setTheme }}>
       <div className={`jk-system-root jk-theme-${theme}`} style={styleVars}>
         {children}
       </div>
-    </SystemContext.Provider>
+    </SystemContext>
   );
 };
