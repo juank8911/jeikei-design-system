@@ -28,7 +28,7 @@ JeiKei is a fully animated, WebGL-powered design system where every interaction 
 pnpm add jeikei-design-system
 
 # From GitHub (current)
-pnpm add "git+https://github.com/jikey8911/jeikei-design-system.git"
+pnpm add "git+https://github.com/juank8911/jeikei-design-system.git"
 ```
 
 ---
@@ -142,19 +142,19 @@ const styles = StyleSheet.create({
 
 ## 🧩 Components
 
-| Component | Description |
-|---|---|
+| Component   | Description                                                    |
+| ----------- | -------------------------------------------------------------- |
 | `NeoLayout` | Root layout — neural WebGL background, glass system, scanlines |
-| `NeoButton` | Neon button — emits pulse on click |
-| `NeoCard` | Glass card — metric display + hover pulse |
-| `NeoInput` | HUD-style input with glow focus ring |
-| `NeoBadge` | Status badge with neon border variants |
-| `NeoModal` | Portal modal — shockwave emitted on open |
-| `NeoPanel` | Full-bleed glass backplane for layouts |
-| `NeoGrid` | Layout grid z-index aware of neural layer |
-| `NeoTable` | Table — row hover sends horizontal scan pulse |
-| `NeoTabs` | Tabs — click fires pulse + neon sliding indicator |
-| `NeoToast` | HUD notification — pulse fires from viewport corner |
+| `NeoButton` | Neon button — emits pulse on click                             |
+| `NeoCard`   | Glass card — metric display + hover pulse                      |
+| `NeoInput`  | HUD-style input with glow focus ring                           |
+| `NeoBadge`  | Status badge with neon border variants                         |
+| `NeoModal`  | Portal modal — shockwave emitted on open                       |
+| `NeoPanel`  | Full-bleed glass backplane for layouts                         |
+| `NeoGrid`   | Layout grid z-index aware of neural layer                      |
+| `NeoTable`  | Table — row hover sends horizontal scan pulse                  |
+| `NeoTabs`   | Tabs — click fires pulse + neon sliding indicator              |
+| `NeoToast`  | HUD notification — pulse fires from viewport corner            |
 
 ---
 
@@ -215,13 +215,13 @@ CSS variables update automatically across all components.
 
 ## 🧱 Utility Classes
 
-| Class | Effect |
-|---|---|
-| `.jk-glass` | `backdrop-blur(24px)` + border + subtle bg |
-| `.jk-glow` | `box-shadow` using `--neo-glow` |
-| `.jk-scanline` | Fixed CRT scanline overlay |
-| `.jk-hud-heading` | Uppercase monospace label (accent color) |
-| `.jk-data-label` | Tiny tracking mono label (muted) |
+| Class             | Effect                                     |
+| ----------------- | ------------------------------------------ |
+| `.jk-glass`       | `backdrop-blur(24px)` + border + subtle bg |
+| `.jk-glow`        | `box-shadow` using `--neo-glow`            |
+| `.jk-scanline`    | Fixed CRT scanline overlay                 |
+| `.jk-hud-heading` | Uppercase monospace label (accent color)   |
+| `.jk-data-label`  | Tiny tracking mono label (muted)           |
 
 ---
 
