@@ -14961,104 +14961,104 @@ typeof __THREE_DEVTOOLS__ < "u" && __THREE_DEVTOOLS__.dispatchEvent(new CustomEv
   revision: Vs
 } }));
 typeof window < "u" && (window.__THREE__ ? console.warn("WARNING: Multiple instances of Three.js being imported.") : window.__THREE__ = Vs);
-const wp = `/**
- * JEIKEI NEURAL V2 - Vertex Shader
- * Corrected for Three.js ShaderMaterial compatibility.
- */
-
-// Custom attribute for neural energy (provided by engine)
-attribute float aEnergy;
-
-// Uniforms provided by NeuralBackground
-uniform float uTime;
-uniform float uSize;
-
-// Varyings to pass data to fragment shader
-varying float vEnergy;
-varying float vRandom;
-
-// Helper to generate pseudo-random values per node
-float hash(float n) {
-  return fract(sin(n) * 43758.5453123);
-}
-
-void main() {
-  // Built-in 'position' is automatically provided by Three.js ShaderMaterial.
-  // DO NOT redefine 'attribute vec3 position;' here.
-
-  vEnergy = aEnergy;
-  vRandom = hash(position.x + position.y);
-
-  // Apply light dynamic jitter (twinkle) based on time and random ID
-  float twinkle = sin(uTime * 2.0 + vRandom * 10.0) * 0.1;
-  vec3 animatedPos = position + vec3(twinkle, twinkle, 0.0);
-
-  // Standard projection: projectionMatrix and modelViewMatrix are built-in
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(animatedPos, 1.0);
-
-  // Dynamic size calculation: base size + pulsing + energy impact
-  float pulse = 0.9 + 0.1 * sin(uTime * 1.5 + vRandom * 6.28);
-  float size = uSize * pulse * (1.0 + vEnergy * 2.5);
-
-  gl_PointSize = size;
-}
-`, Rp = `varying float vEnergy;
-uniform vec3 uAccent;
-uniform float uGlowIntensity;
-
-void main() {
-  float dist = distance(gl_PointCoord, vec2(0.5));
-  if (dist > 0.5) discard;
-
-  // Concentric bloom intensity
-  float alpha = 0.0;
-
-  // Core: 0.0-0.1
-  if (dist < 0.1) {
-    alpha = 1.0;
-  } else {
-    // Inverse exponential bloom for the halo
-    float bloom = (1.0 - dist * 2.0);
-    alpha = pow(bloom, 2.5);
-  }
-
-  // Pulse scaling via energy
-  float energyBoost = vEnergy * 1.5;
-  float ambientGlow = 0.08; // Ensure it's always faintly visible
-
-  vec3 finalColor = mix(uAccent, vec3(1.0), vEnergy * 0.4);
-
-  gl_FragColor = vec4(finalColor, alpha * (ambientGlow + energyBoost) * uGlowIntensity);
-}
-`, Cp = `/**
- * JEIKEI NEURAL V2 - Edge Vertex Shader
- */
-attribute float aActive;
-uniform float uTime;
-
-varying float vActive;
-
-void main() {
-  vActive = aActive;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`, Pp = `/**
- * JEIKEI NEURAL V2 - Edge Fragment Shader
- */
-uniform vec3 uAccent;
-varying float vActive;
-
-void main() {
-  float baseOpacity = 0.15;
-  float activePulse = vActive * 0.85;
-
-  vec3 finalColor = uAccent;
-  if (vActive > 0.5) {
-    finalColor = mix(uAccent, vec4(uAccent, 1.0).rgb * 2.0, 0.5);
-  }
-
-  gl_FragColor = vec4(finalColor, baseOpacity + activePulse);
-}
+const wp = `/**\r
+ * JEIKEI NEURAL V2 - Vertex Shader\r
+ * Corrected for Three.js ShaderMaterial compatibility.\r
+ */\r
+\r
+// Custom attribute for neural energy (provided by engine)\r
+attribute float aEnergy;\r
+\r
+// Uniforms provided by NeuralBackground\r
+uniform float uTime;\r
+uniform float uSize;\r
+\r
+// Varyings to pass data to fragment shader\r
+varying float vEnergy;\r
+varying float vRandom;\r
+\r
+// Helper to generate pseudo-random values per node\r
+float hash(float n) { \r
+  return fract(sin(n) * 43758.5453123); \r
+}\r
+\r
+void main() {\r
+  // Built-in 'position' is automatically provided by Three.js ShaderMaterial.\r
+  // DO NOT redefine 'attribute vec3 position;' here.\r
+  \r
+  vEnergy = aEnergy;\r
+  vRandom = hash(position.x + position.y);\r
+  \r
+  // Apply light dynamic jitter (twinkle) based on time and random ID\r
+  float twinkle = sin(uTime * 2.0 + vRandom * 10.0) * 0.1;\r
+  vec3 animatedPos = position + vec3(twinkle, twinkle, 0.0);\r
+\r
+  // Standard projection: projectionMatrix and modelViewMatrix are built-in\r
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(animatedPos, 1.0);\r
+  \r
+  // Dynamic size calculation: base size + pulsing + energy impact\r
+  float pulse = 0.9 + 0.1 * sin(uTime * 1.5 + vRandom * 6.28);\r
+  float size = uSize * pulse * (1.0 + vEnergy * 2.5);\r
+  \r
+  gl_PointSize = size;\r
+}\r
+`, Rp = `varying float vEnergy;\r
+uniform vec3 uAccent;\r
+uniform float uGlowIntensity;\r
+\r
+void main() {\r
+  float dist = distance(gl_PointCoord, vec2(0.5));\r
+  if (dist > 0.5) discard;\r
+  \r
+  // Concentric bloom intensity\r
+  float alpha = 0.0;\r
+  \r
+  // Core: 0.0-0.1\r
+  if (dist < 0.1) {\r
+    alpha = 1.0;\r
+  } else {\r
+    // Inverse exponential bloom for the halo\r
+    float bloom = (1.0 - dist * 2.0);\r
+    alpha = pow(bloom, 2.5);\r
+  }\r
+  \r
+  // Pulse scaling via energy\r
+  float energyBoost = vEnergy * 1.5;\r
+  float ambientGlow = 0.08; // Ensure it's always faintly visible\r
+  \r
+  vec3 finalColor = mix(uAccent, vec3(1.0), vEnergy * 0.4);\r
+  \r
+  gl_FragColor = vec4(finalColor, alpha * (ambientGlow + energyBoost) * uGlowIntensity);\r
+}\r
+`, Cp = `/**\r
+ * JEIKEI NEURAL V2 - Edge Vertex Shader\r
+ */\r
+attribute float aActive;\r
+uniform float uTime;\r
+\r
+varying float vActive;\r
+\r
+void main() {\r
+  vActive = aActive;\r
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\r
+}\r
+`, Pp = `/**\r
+ * JEIKEI NEURAL V2 - Edge Fragment Shader\r
+ */\r
+uniform vec3 uAccent;\r
+varying float vActive;\r
+\r
+void main() {\r
+  float baseOpacity = 0.15;\r
+  float activePulse = vActive * 0.85;\r
+  \r
+  vec3 finalColor = uAccent;\r
+  if (vActive > 0.5) {\r
+    finalColor = mix(uAccent, vec4(uAccent, 1.0).rgb * 2.0, 0.5);\r
+  }\r
+  \r
+  gl_FragColor = vec4(finalColor, baseOpacity + activePulse);\r
+}\r
 `, Ko = ({
   mode: i = "fullscreen",
   className: e = ""
@@ -15066,83 +15066,89 @@ void main() {
   const { engine: t, theme: n } = Ct(), r = la(null), s = la(null), [a, o] = mi(0);
   hn(() => {
     if (!r.current || !t) return;
-    const c = r.current, u = i === "fullscreen", f = new Mp({
-      antialias: !0,
-      alpha: !0,
-      powerPreference: "high-performance"
-    });
-    f.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    const p = () => {
-      const S = u ? window.innerWidth : c.clientWidth, V = u ? window.innerHeight : c.clientHeight;
-      return f.setSize(S, V), { width: S, height: V };
-    }, m = p();
-    f.setClearColor(0, 0), c.appendChild(f.domElement), s.current = f;
-    const v = new Sp(), M = new Vo(
-      -m.width / 2,
-      m.width / 2,
-      m.height / 2,
-      -m.height / 2,
-      0.1,
-      1e3
-    );
-    M.position.z = 10;
-    const d = new Bt(), h = new Gt({
-      vertexShader: wp,
-      fragmentShader: Rp,
-      transparent: !0,
-      blending: sr,
-      depthWrite: !1,
-      uniforms: {
-        uTime: { value: 0 },
-        uAccent: { value: new Ge(n === "mission" ? 15907131 : 3463423) },
-        uGlowIntensity: { value: 2.5 },
-        uSize: { value: u ? 10 : 6 }
-      }
-    }), b = new Ap(d, h);
-    v.add(b);
-    const E = new Bt(), T = new Gt({
-      vertexShader: Cp,
-      fragmentShader: Pp,
-      transparent: !0,
-      blending: sr,
-      depthWrite: !1,
-      uniforms: {
-        uTime: { value: 0 },
-        uAccent: { value: new Ge(n === "mission" ? 15907131 : 3463423) }
-      }
-    }), k = new Tp(E, T);
-    v.add(k);
-    let R = 0, A = performance.now();
-    const O = t.subscribe((S) => {
-      const { nodes: V, edges: H, activeEdges: X } = S, K = f.getSize(new je()), z = new Float32Array(V.length * 3), J = new Float32Array(V.length);
-      V.forEach((D, ie) => {
-        z[ie * 3] = D.position[0] - K.x / 2, z[ie * 3 + 1] = D.position[1] - K.y / 2, z[ie * 3 + 2] = D.position[2], J[ie] = D.energy;
-      }), d.setAttribute("position", new _t(z, 3)), d.setAttribute("aEnergy", new _t(J, 1));
-      const G = new Float32Array(H.length * 6), oe = new Float32Array(H.length * 2);
-      H.forEach((D, ie) => {
-        const xe = V[D.from], B = V[D.to];
-        if (xe && B) {
-          const $ = ie * 6;
-          G[$] = xe.position[0] - K.x / 2, G[$ + 1] = xe.position[1] - K.y / 2, G[$ + 2] = xe.position[2], G[$ + 3] = B.position[0] - K.x / 2, G[$ + 4] = B.position[1] - K.y / 2, G[$ + 5] = B.position[2];
-          const fe = [D.from, D.to].sort((Te, ye) => Te - ye).join("-"), ee = X.has(fe) ? 1 : 0;
-          oe[ie * 2] = ee, oe[ie * 2 + 1] = ee;
+    const c = r.current, u = i === "fullscreen";
+    try {
+      const f = new Mp({
+        antialias: !0,
+        alpha: !0,
+        powerPreference: "high-performance"
+      });
+      f.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      const p = () => {
+        const S = u ? window.innerWidth : c.clientWidth, V = u ? window.innerHeight : c.clientHeight;
+        return f.setSize(S, V), { width: S, height: V };
+      }, m = p();
+      f.setClearColor(0, 0), c.appendChild(f.domElement), s.current = f;
+      const v = new Sp(), M = new Vo(
+        -m.width / 2,
+        m.width / 2,
+        m.height / 2,
+        -m.height / 2,
+        0.1,
+        1e3
+      );
+      M.position.z = 10;
+      const d = new Bt(), h = new Gt({
+        vertexShader: wp,
+        fragmentShader: Rp,
+        transparent: !0,
+        blending: sr,
+        depthWrite: !1,
+        uniforms: {
+          uTime: { value: 0 },
+          uAccent: { value: new Ge(n === "mission" ? 15907131 : 3463423) },
+          uGlowIntensity: { value: 2.5 },
+          uSize: { value: u ? 10 : 6 }
         }
-      }), E.setAttribute("position", new _t(G, 3)), E.setAttribute("aActive", new _t(oe, 1)), h.uniforms.uTime.value = performance.now() * 1e-3, T.uniforms.uTime.value = performance.now() * 1e-3, f.render(v, M), R++;
-      const le = performance.now();
-      le - A > 1e3 && (o(R), R = 0, A = le);
-    }), Q = () => {
-      const S = p();
-      M.left = -S.width / 2, M.right = S.width / 2, M.top = S.height / 2, M.bottom = -S.height / 2, M.updateProjectionMatrix();
-    }, g = new ResizeObserver(() => {
-      Q();
-    });
-    return u ? window.addEventListener("resize", Q) : g.observe(c), () => {
-      O(), window.removeEventListener("resize", Q), g.disconnect(), f.dispose(), c.contains(f.domElement) && c.removeChild(f.domElement);
-    };
+      }), b = new Ap(d, h);
+      v.add(b);
+      const E = new Bt(), T = new Gt({
+        vertexShader: Cp,
+        fragmentShader: Pp,
+        transparent: !0,
+        blending: sr,
+        depthWrite: !1,
+        uniforms: {
+          uTime: { value: 0 },
+          uAccent: { value: new Ge(n === "mission" ? 15907131 : 3463423) }
+        }
+      }), k = new Tp(E, T);
+      v.add(k);
+      let R = 0, A = performance.now();
+      const O = t.subscribe((S) => {
+        const { nodes: V, edges: H, activeEdges: X } = S, K = f.getSize(new je()), z = new Float32Array(V.length * 3), J = new Float32Array(V.length);
+        V.forEach((D, ie) => {
+          z[ie * 3] = D.position[0] - K.x / 2, z[ie * 3 + 1] = D.position[1] - K.y / 2, z[ie * 3 + 2] = D.position[2], J[ie] = D.energy;
+        }), d.setAttribute("position", new _t(z, 3)), d.setAttribute("aEnergy", new _t(J, 1));
+        const G = new Float32Array(H.length * 6), oe = new Float32Array(H.length * 2);
+        H.forEach((D, ie) => {
+          const xe = V[D.from], B = V[D.to];
+          if (xe && B) {
+            const $ = ie * 6;
+            G[$] = xe.position[0] - K.x / 2, G[$ + 1] = xe.position[1] - K.y / 2, G[$ + 2] = xe.position[2], G[$ + 3] = B.position[0] - K.x / 2, G[$ + 4] = B.position[1] - K.y / 2, G[$ + 5] = B.position[2];
+            const fe = [D.from, D.to].sort((Te, ye) => Te - ye).join("-"), ee = X.has(fe) ? 1 : 0;
+            oe[ie * 2] = ee, oe[ie * 2 + 1] = ee;
+          }
+        }), E.setAttribute("position", new _t(G, 3)), E.setAttribute("aActive", new _t(oe, 1)), h.uniforms.uTime.value = performance.now() * 1e-3, T.uniforms.uTime.value = performance.now() * 1e-3, f.render(v, M), R++;
+        const le = performance.now();
+        le - A > 1e3 && (o(R), R = 0, A = le);
+      }), Q = () => {
+        const S = p();
+        M.left = -S.width / 2, M.right = S.width / 2, M.top = S.height / 2, M.bottom = -S.height / 2, M.updateProjectionMatrix();
+      }, g = new ResizeObserver(() => {
+        Q();
+      });
+      return u ? window.addEventListener("resize", Q) : g.observe(c), () => {
+        O(), window.removeEventListener("resize", Q), g.disconnect(), f.dispose(), c.contains(f.domElement) && c.removeChild(f.domElement);
+      };
+    } catch (f) {
+      return console.warn("WebGL initialization failed, falling back to basic background:", f), () => {
+      };
+    }
   }, [t, n, i]);
   const l = i === "fullscreen" ? "fixed inset-0 -z-10 bg-[#020202] pointer-events-none" : "relative w-full h-full min-h-[300px] overflow-hidden rounded-xl border border-white/5 jk-glass pointer-events-none";
   return /* @__PURE__ */ re.jsxs("div", { ref: r, className: `${l} ${e}`, children: [
-    /* @__PURE__ */ re.jsx("div", { className: "absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" }),
+    /* @__PURE__ */ re.jsx("div", { className: "absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('/noise.svg')]" }),
     i === "fullscreen" && /* @__PURE__ */ re.jsxs("div", { className: "absolute top-4 right-6 font-mono text-[9px] tracking-widest text-neo-accent opacity-30 select-none", children: [
       "SYSTEM_LOAD: ",
       a,
@@ -15196,4 +15202,4 @@ export {
   Rt as o,
   Ct as u
 };
-//# sourceMappingURL=index-DQfx0v4j.js.map
+//# sourceMappingURL=index-CQUjrvhg.js.map
