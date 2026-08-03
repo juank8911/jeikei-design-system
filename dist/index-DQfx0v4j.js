@@ -14961,104 +14961,104 @@ typeof __THREE_DEVTOOLS__ < "u" && __THREE_DEVTOOLS__.dispatchEvent(new CustomEv
   revision: Vs
 } }));
 typeof window < "u" && (window.__THREE__ ? console.warn("WARNING: Multiple instances of Three.js being imported.") : window.__THREE__ = Vs);
-const wp = `/**\r
- * JEIKEI NEURAL V2 - Vertex Shader\r
- * Corrected for Three.js ShaderMaterial compatibility.\r
- */\r
-\r
-// Custom attribute for neural energy (provided by engine)\r
-attribute float aEnergy;\r
-\r
-// Uniforms provided by NeuralBackground\r
-uniform float uTime;\r
-uniform float uSize;\r
-\r
-// Varyings to pass data to fragment shader\r
-varying float vEnergy;\r
-varying float vRandom;\r
-\r
-// Helper to generate pseudo-random values per node\r
-float hash(float n) { \r
-  return fract(sin(n) * 43758.5453123); \r
-}\r
-\r
-void main() {\r
-  // Built-in 'position' is automatically provided by Three.js ShaderMaterial.\r
-  // DO NOT redefine 'attribute vec3 position;' here.\r
-  \r
-  vEnergy = aEnergy;\r
-  vRandom = hash(position.x + position.y);\r
-  \r
-  // Apply light dynamic jitter (twinkle) based on time and random ID\r
-  float twinkle = sin(uTime * 2.0 + vRandom * 10.0) * 0.1;\r
-  vec3 animatedPos = position + vec3(twinkle, twinkle, 0.0);\r
-\r
-  // Standard projection: projectionMatrix and modelViewMatrix are built-in\r
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(animatedPos, 1.0);\r
-  \r
-  // Dynamic size calculation: base size + pulsing + energy impact\r
-  float pulse = 0.9 + 0.1 * sin(uTime * 1.5 + vRandom * 6.28);\r
-  float size = uSize * pulse * (1.0 + vEnergy * 2.5);\r
-  \r
-  gl_PointSize = size;\r
-}\r
-`, Rp = `varying float vEnergy;\r
-uniform vec3 uAccent;\r
-uniform float uGlowIntensity;\r
-\r
-void main() {\r
-  float dist = distance(gl_PointCoord, vec2(0.5));\r
-  if (dist > 0.5) discard;\r
-  \r
-  // Concentric bloom intensity\r
-  float alpha = 0.0;\r
-  \r
-  // Core: 0.0-0.1\r
-  if (dist < 0.1) {\r
-    alpha = 1.0;\r
-  } else {\r
-    // Inverse exponential bloom for the halo\r
-    float bloom = (1.0 - dist * 2.0);\r
-    alpha = pow(bloom, 2.5);\r
-  }\r
-  \r
-  // Pulse scaling via energy\r
-  float energyBoost = vEnergy * 1.5;\r
-  float ambientGlow = 0.08; // Ensure it's always faintly visible\r
-  \r
-  vec3 finalColor = mix(uAccent, vec3(1.0), vEnergy * 0.4);\r
-  \r
-  gl_FragColor = vec4(finalColor, alpha * (ambientGlow + energyBoost) * uGlowIntensity);\r
-}\r
-`, Cp = `/**\r
- * JEIKEI NEURAL V2 - Edge Vertex Shader\r
- */\r
-attribute float aActive;\r
-uniform float uTime;\r
-\r
-varying float vActive;\r
-\r
-void main() {\r
-  vActive = aActive;\r
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\r
-}\r
-`, Pp = `/**\r
- * JEIKEI NEURAL V2 - Edge Fragment Shader\r
- */\r
-uniform vec3 uAccent;\r
-varying float vActive;\r
-\r
-void main() {\r
-  float baseOpacity = 0.15;\r
-  float activePulse = vActive * 0.85;\r
-  \r
-  vec3 finalColor = uAccent;\r
-  if (vActive > 0.5) {\r
-    finalColor = mix(uAccent, vec4(uAccent, 1.0).rgb * 2.0, 0.5);\r
-  }\r
-  \r
-  gl_FragColor = vec4(finalColor, baseOpacity + activePulse);\r
-}\r
+const wp = `/**
+ * JEIKEI NEURAL V2 - Vertex Shader
+ * Corrected for Three.js ShaderMaterial compatibility.
+ */
+
+// Custom attribute for neural energy (provided by engine)
+attribute float aEnergy;
+
+// Uniforms provided by NeuralBackground
+uniform float uTime;
+uniform float uSize;
+
+// Varyings to pass data to fragment shader
+varying float vEnergy;
+varying float vRandom;
+
+// Helper to generate pseudo-random values per node
+float hash(float n) {
+  return fract(sin(n) * 43758.5453123);
+}
+
+void main() {
+  // Built-in 'position' is automatically provided by Three.js ShaderMaterial.
+  // DO NOT redefine 'attribute vec3 position;' here.
+
+  vEnergy = aEnergy;
+  vRandom = hash(position.x + position.y);
+
+  // Apply light dynamic jitter (twinkle) based on time and random ID
+  float twinkle = sin(uTime * 2.0 + vRandom * 10.0) * 0.1;
+  vec3 animatedPos = position + vec3(twinkle, twinkle, 0.0);
+
+  // Standard projection: projectionMatrix and modelViewMatrix are built-in
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(animatedPos, 1.0);
+
+  // Dynamic size calculation: base size + pulsing + energy impact
+  float pulse = 0.9 + 0.1 * sin(uTime * 1.5 + vRandom * 6.28);
+  float size = uSize * pulse * (1.0 + vEnergy * 2.5);
+
+  gl_PointSize = size;
+}
+`, Rp = `varying float vEnergy;
+uniform vec3 uAccent;
+uniform float uGlowIntensity;
+
+void main() {
+  float dist = distance(gl_PointCoord, vec2(0.5));
+  if (dist > 0.5) discard;
+
+  // Concentric bloom intensity
+  float alpha = 0.0;
+
+  // Core: 0.0-0.1
+  if (dist < 0.1) {
+    alpha = 1.0;
+  } else {
+    // Inverse exponential bloom for the halo
+    float bloom = (1.0 - dist * 2.0);
+    alpha = pow(bloom, 2.5);
+  }
+
+  // Pulse scaling via energy
+  float energyBoost = vEnergy * 1.5;
+  float ambientGlow = 0.08; // Ensure it's always faintly visible
+
+  vec3 finalColor = mix(uAccent, vec3(1.0), vEnergy * 0.4);
+
+  gl_FragColor = vec4(finalColor, alpha * (ambientGlow + energyBoost) * uGlowIntensity);
+}
+`, Cp = `/**
+ * JEIKEI NEURAL V2 - Edge Vertex Shader
+ */
+attribute float aActive;
+uniform float uTime;
+
+varying float vActive;
+
+void main() {
+  vActive = aActive;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+`, Pp = `/**
+ * JEIKEI NEURAL V2 - Edge Fragment Shader
+ */
+uniform vec3 uAccent;
+varying float vActive;
+
+void main() {
+  float baseOpacity = 0.15;
+  float activePulse = vActive * 0.85;
+
+  vec3 finalColor = uAccent;
+  if (vActive > 0.5) {
+    finalColor = mix(uAccent, vec4(uAccent, 1.0).rgb * 2.0, 0.5);
+  }
+
+  gl_FragColor = vec4(finalColor, baseOpacity + activePulse);
+}
 `, Ko = ({
   mode: i = "fullscreen",
   className: e = ""
@@ -15196,4 +15196,4 @@ export {
   Rt as o,
   Ct as u
 };
-//# sourceMappingURL=index-CtVKQ_AN.js.map
+//# sourceMappingURL=index-DQfx0v4j.js.map
