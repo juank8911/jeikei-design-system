@@ -15066,83 +15066,89 @@ void main() {\r
   const { engine: t, theme: n } = Ct(), r = la(null), s = la(null), [a, o] = mi(0);
   hn(() => {
     if (!r.current || !t) return;
-    const c = r.current, u = i === "fullscreen", f = new Mp({
-      antialias: !0,
-      alpha: !0,
-      powerPreference: "high-performance"
-    });
-    f.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    const p = () => {
-      const S = u ? window.innerWidth : c.clientWidth, V = u ? window.innerHeight : c.clientHeight;
-      return f.setSize(S, V), { width: S, height: V };
-    }, m = p();
-    f.setClearColor(0, 0), c.appendChild(f.domElement), s.current = f;
-    const v = new Sp(), M = new Vo(
-      -m.width / 2,
-      m.width / 2,
-      m.height / 2,
-      -m.height / 2,
-      0.1,
-      1e3
-    );
-    M.position.z = 10;
-    const d = new Bt(), h = new Gt({
-      vertexShader: wp,
-      fragmentShader: Rp,
-      transparent: !0,
-      blending: sr,
-      depthWrite: !1,
-      uniforms: {
-        uTime: { value: 0 },
-        uAccent: { value: new Ge(n === "mission" ? 15907131 : 3463423) },
-        uGlowIntensity: { value: 2.5 },
-        uSize: { value: u ? 10 : 6 }
-      }
-    }), b = new Ap(d, h);
-    v.add(b);
-    const E = new Bt(), T = new Gt({
-      vertexShader: Cp,
-      fragmentShader: Pp,
-      transparent: !0,
-      blending: sr,
-      depthWrite: !1,
-      uniforms: {
-        uTime: { value: 0 },
-        uAccent: { value: new Ge(n === "mission" ? 15907131 : 3463423) }
-      }
-    }), k = new Tp(E, T);
-    v.add(k);
-    let R = 0, A = performance.now();
-    const O = t.subscribe((S) => {
-      const { nodes: V, edges: H, activeEdges: X } = S, K = f.getSize(new je()), z = new Float32Array(V.length * 3), J = new Float32Array(V.length);
-      V.forEach((D, ie) => {
-        z[ie * 3] = D.position[0] - K.x / 2, z[ie * 3 + 1] = D.position[1] - K.y / 2, z[ie * 3 + 2] = D.position[2], J[ie] = D.energy;
-      }), d.setAttribute("position", new _t(z, 3)), d.setAttribute("aEnergy", new _t(J, 1));
-      const G = new Float32Array(H.length * 6), oe = new Float32Array(H.length * 2);
-      H.forEach((D, ie) => {
-        const xe = V[D.from], B = V[D.to];
-        if (xe && B) {
-          const $ = ie * 6;
-          G[$] = xe.position[0] - K.x / 2, G[$ + 1] = xe.position[1] - K.y / 2, G[$ + 2] = xe.position[2], G[$ + 3] = B.position[0] - K.x / 2, G[$ + 4] = B.position[1] - K.y / 2, G[$ + 5] = B.position[2];
-          const fe = [D.from, D.to].sort((Te, ye) => Te - ye).join("-"), ee = X.has(fe) ? 1 : 0;
-          oe[ie * 2] = ee, oe[ie * 2 + 1] = ee;
+    const c = r.current, u = i === "fullscreen";
+    try {
+      const f = new Mp({
+        antialias: !0,
+        alpha: !0,
+        powerPreference: "high-performance"
+      });
+      f.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      const p = () => {
+        const S = u ? window.innerWidth : c.clientWidth, V = u ? window.innerHeight : c.clientHeight;
+        return f.setSize(S, V), { width: S, height: V };
+      }, m = p();
+      f.setClearColor(0, 0), c.appendChild(f.domElement), s.current = f;
+      const v = new Sp(), M = new Vo(
+        -m.width / 2,
+        m.width / 2,
+        m.height / 2,
+        -m.height / 2,
+        0.1,
+        1e3
+      );
+      M.position.z = 10;
+      const d = new Bt(), h = new Gt({
+        vertexShader: wp,
+        fragmentShader: Rp,
+        transparent: !0,
+        blending: sr,
+        depthWrite: !1,
+        uniforms: {
+          uTime: { value: 0 },
+          uAccent: { value: new Ge(n === "mission" ? 15907131 : 3463423) },
+          uGlowIntensity: { value: 2.5 },
+          uSize: { value: u ? 10 : 6 }
         }
-      }), E.setAttribute("position", new _t(G, 3)), E.setAttribute("aActive", new _t(oe, 1)), h.uniforms.uTime.value = performance.now() * 1e-3, T.uniforms.uTime.value = performance.now() * 1e-3, f.render(v, M), R++;
-      const le = performance.now();
-      le - A > 1e3 && (o(R), R = 0, A = le);
-    }), Q = () => {
-      const S = p();
-      M.left = -S.width / 2, M.right = S.width / 2, M.top = S.height / 2, M.bottom = -S.height / 2, M.updateProjectionMatrix();
-    }, g = new ResizeObserver(() => {
-      Q();
-    });
-    return u ? window.addEventListener("resize", Q) : g.observe(c), () => {
-      O(), window.removeEventListener("resize", Q), g.disconnect(), f.dispose(), c.contains(f.domElement) && c.removeChild(f.domElement);
-    };
+      }), b = new Ap(d, h);
+      v.add(b);
+      const E = new Bt(), T = new Gt({
+        vertexShader: Cp,
+        fragmentShader: Pp,
+        transparent: !0,
+        blending: sr,
+        depthWrite: !1,
+        uniforms: {
+          uTime: { value: 0 },
+          uAccent: { value: new Ge(n === "mission" ? 15907131 : 3463423) }
+        }
+      }), k = new Tp(E, T);
+      v.add(k);
+      let R = 0, A = performance.now();
+      const O = t.subscribe((S) => {
+        const { nodes: V, edges: H, activeEdges: X } = S, K = f.getSize(new je()), z = new Float32Array(V.length * 3), J = new Float32Array(V.length);
+        V.forEach((D, ie) => {
+          z[ie * 3] = D.position[0] - K.x / 2, z[ie * 3 + 1] = D.position[1] - K.y / 2, z[ie * 3 + 2] = D.position[2], J[ie] = D.energy;
+        }), d.setAttribute("position", new _t(z, 3)), d.setAttribute("aEnergy", new _t(J, 1));
+        const G = new Float32Array(H.length * 6), oe = new Float32Array(H.length * 2);
+        H.forEach((D, ie) => {
+          const xe = V[D.from], B = V[D.to];
+          if (xe && B) {
+            const $ = ie * 6;
+            G[$] = xe.position[0] - K.x / 2, G[$ + 1] = xe.position[1] - K.y / 2, G[$ + 2] = xe.position[2], G[$ + 3] = B.position[0] - K.x / 2, G[$ + 4] = B.position[1] - K.y / 2, G[$ + 5] = B.position[2];
+            const fe = [D.from, D.to].sort((Te, ye) => Te - ye).join("-"), ee = X.has(fe) ? 1 : 0;
+            oe[ie * 2] = ee, oe[ie * 2 + 1] = ee;
+          }
+        }), E.setAttribute("position", new _t(G, 3)), E.setAttribute("aActive", new _t(oe, 1)), h.uniforms.uTime.value = performance.now() * 1e-3, T.uniforms.uTime.value = performance.now() * 1e-3, f.render(v, M), R++;
+        const le = performance.now();
+        le - A > 1e3 && (o(R), R = 0, A = le);
+      }), Q = () => {
+        const S = p();
+        M.left = -S.width / 2, M.right = S.width / 2, M.top = S.height / 2, M.bottom = -S.height / 2, M.updateProjectionMatrix();
+      }, g = new ResizeObserver(() => {
+        Q();
+      });
+      return u ? window.addEventListener("resize", Q) : g.observe(c), () => {
+        O(), window.removeEventListener("resize", Q), g.disconnect(), f.dispose(), c.contains(f.domElement) && c.removeChild(f.domElement);
+      };
+    } catch (f) {
+      return console.warn("WebGL initialization failed, falling back to basic background:", f), () => {
+      };
+    }
   }, [t, n, i]);
   const l = i === "fullscreen" ? "fixed inset-0 -z-10 bg-[#020202] pointer-events-none" : "relative w-full h-full min-h-[300px] overflow-hidden rounded-xl border border-white/5 jk-glass pointer-events-none";
   return /* @__PURE__ */ re.jsxs("div", { ref: r, className: `${l} ${e}`, children: [
-    /* @__PURE__ */ re.jsx("div", { className: "absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" }),
+    /* @__PURE__ */ re.jsx("div", { className: "absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('/noise.svg')]" }),
     i === "fullscreen" && /* @__PURE__ */ re.jsxs("div", { className: "absolute top-4 right-6 font-mono text-[9px] tracking-widest text-neo-accent opacity-30 select-none", children: [
       "SYSTEM_LOAD: ",
       a,
@@ -15196,4 +15202,4 @@ export {
   Rt as o,
   Ct as u
 };
-//# sourceMappingURL=index-CtVKQ_AN.js.map
+//# sourceMappingURL=index-CQUjrvhg.js.map
