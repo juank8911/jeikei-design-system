@@ -178,9 +178,15 @@ export const NeuralBackground: React.FC<NeuralBackgroundProps> = ({
         resizeObserver.observe(container);
       }
 
+      const handleClick = (e: MouseEvent) => {
+        engine.emitPulse(e.clientX, e.clientY, 1.5);
+      };
+      window.addEventListener('click', handleClick);
+
       return () => {
         unsubscribe();
         window.removeEventListener('resize', handleResize);
+        window.removeEventListener('click', handleClick);
         resizeObserver.disconnect();
         renderer.dispose();
         if (container.contains(renderer.domElement)) {

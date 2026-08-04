@@ -75,6 +75,14 @@ export class NeuralEngine implements NeuralEngineAPI {
     // 0. Update Positions (Organic Drift)
     this.updatePositions(delta);
 
+    // Random spontaneous pulses (propio movimiento)
+    if (Math.random() < 0.02) { 
+      const randomNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
+      if (randomNode) {
+        this.emitPulse(randomNode.position[0], randomNode.position[1], 0.6 + Math.random() * 0.4);
+      }
+    }
+
     // 1. Process Active Pulses
     const nextPulses: NeuralPulse[] = [];
     this.activeEdges.clear();
@@ -147,7 +155,7 @@ export class NeuralEngine implements NeuralEngineAPI {
   }
 
   private updatePositions(delta: number) {
-    const speed = 0.5; // Multiplier for drift speed
+    const speed = 2.5; // Multiplier for drift speed (increased for noticeable movement)
     this.nodes.forEach(node => {
       // Apply velocity
       node.position[0] += node.velocity[0] * delta * speed;

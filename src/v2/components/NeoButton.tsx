@@ -49,8 +49,8 @@ export const NeoButton: React.FC<NeoButtonProps> = ({
       {...props}
     >
       <span className="relative z-10">{children}</span>
-      {/* Interaction Ripple Layer */}
-      <div className="absolute inset-0 bg-white/10 opacity-0 active:opacity-100 transition-opacity" />
+      {/* Interaction Ripple Layer (Optimized with Glass and Shine) */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 active:opacity-100 transition-all duration-300 backdrop-blur-[2px] shadow-[0_0_15px_rgba(255,255,255,0.2)] mix-blend-overlay" />
     </button>
   );
 };
