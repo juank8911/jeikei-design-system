@@ -188,9 +188,21 @@ export const NeuralBackground: React.FC<NeuralBackgroundProps> = ({
         window.removeEventListener('resize', handleResize);
         window.removeEventListener('click', handleClick);
         resizeObserver.disconnect();
-        renderer.dispose();
-        if (container.contains(renderer.domElement)) {
-          container.removeChild(renderer.domElement);
+        
+        // Proper Three.js resource cleanup
+        pointsGeo.dispose();
+        pointsMat.dispose();
+        edgesGeo.dispose();
+        edgesMat.dispose();
+        
+        // Force context loss to prevent WebGL context limit errors on hot reload
+        if (rendererRef.current) {
+          rendererRef.current.forceContextLoss();
+          rendererRef.current.dispose();
+          const domElement = rendererRef.current.domElement;
+          if (domElement && domElement.parentNode) {
+            domElement.parentNode.removeChild(domElement);
+          }
         }
       };
     } catch (err) {
